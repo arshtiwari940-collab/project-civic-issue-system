@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samadhan Portal</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+  font-family: "Segoe UI", sans-serif;
+  color: #f8f9fa;
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(-45deg,rgb(163, 160, 160));
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  position: relative;
+  overflow-x: hidden;
+}
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+ @media (max-width: 768px) {
+      .navbar { flex-direction: column; text-align: center; }
+      .navbar h1 { font-size: 22px; }
+      header h1 { font-size: 28px; }
+      .container h2 { font-size: 22px; }
+      h3 { font-size: 20px; }
+    }
+    @media (max-width: 480px) {
+      .navbar { padding: 10px; }
+      .navbar h1 { font-size: 18px; }
+      header h1 { font-size: 22px; }
+      header p { font-size: 14px; }
+      .container h2 { font-size: 18px; }
+      .text { font-size: 28px; }
+    }
+body::before {
+  content: "";
+  position: absolute;
+  top: 28%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("jharkhand.png") no-repeat center;
+  background-size: 500px;
+  opacity: 1; 
+  z-index: 0;
+  animation: floatLogo 20s linear infinite alternate;
+}
+@keyframes floatLogo {
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+  100% { transform: translateY(0px) scale(1); }
+}
+.navbar, header, .container, .stats-container, footer {
+  position: relative;
+  z-index: 1;
+}
+    .navbar {
+      background: rgba(9, 120, 232, 0.9);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 40px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+   .navbar h1 {
+  font-family: 'Orbitron';
+  font-size: 30px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #00f7ff, #00ffcc, #ffd700, #ff00ff);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientText 8s ease infinite, shine 2s linear infinite;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-right: 650px;
+}
+    .navbar a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    .navbar a:hover {
+      color: #ffd700;
+    }
+    .nav-logo {
+      height: 50px;
+      width: auto;
+    }
+    header {
+      margin-top: 0;
+      background: rgba(0, 64, 128, 0.2);
+      color: white;
+      padding: 60px 20px;
+      backdrop-filter: blur(6px);
+      text-align: center;
+      border-bottom: 2px solid rgba(255,255,255,0.2);
+    }
+    header h1 {
+      font-size: 46px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px #00f7ff, 0 0 25px #0077ff;
+    }
+    header p {
+      font-size: 20px;
+      font-style: italic;
+      font-weight: 600;
+      opacity: 0.9;
+      color: #141515;
+    }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+    .container h2 {
+      font-size: 34px;
+      color: #187def;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #141515;
+      display: inline-block;
+      padding-bottom: 8px;
+    }
+    .objectives {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    .objective-btn {
+      flex: 1 1 28%;
+      background: linear-gradient(135deg, #004080, #0088ff);
+      color: white;
+      padding: 18px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.4s;
+      min-width: 220px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .objective-btn:hover {
+      background: linear-gradient(135deg, #0088ff, #00d4ff);
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    h3 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 26px;
+      color: #187def;
+    }
+    .steps {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .step {
+      flex: 1 1 22%;
+      text-align: center;
+      background: rgba(0,0,0,0.3);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+    .step:hover { transform: translateY(-8px) scale(1.05); }
+    .step-circle {
+      width: 65px; height: 65px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00f7ff, #0077ff);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-weight: bold;
+      font-size: 22px;
+      box-shadow: 0 0 15px #00f7ff;
+    }
+    .step p { font-size: 16px; }
+    .stats-container {
+      margin: 50px auto;
+      text-align: center;
+    }
+    .stats-container h2 {
+      font-size: 30px;
+      color: #00b3ff;
+      margin-bottom: 20px;
+    }
+    canvas {
+      max-width: 400px;
+      margin: auto;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+    footer {
+      margin-top: 60px;
+      background: rgba(0, 64, 128, 0.3);
+      color: rgb(16, 16, 16);
+      padding: 40px 20px;
+      backdrop-filter: blur(6px);
+      border-top: 2px solid rgba(255,255,255,0.2);
+    }
+    footer h4 {
+      margin-bottom: 12px;
+      font-size: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      padding-bottom: 6px;
+    }
+    footer .footer-sections {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    footer ul { list-style: none; }
+    footer ul li { margin: 8px 0; }
+    footer ul li a {
+      color: #181a1d;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    footer ul li a:hover {
+      text-decoration: underline;
+      color: #ffd700;
+    }
+    footer p {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    .text {
+      font-size: 52px;
+      font-weight: 700;
+      color: #076fed;
+    }
+    .flash-btn{
+      flex: 1 1 28%;
+      color: white;
+      padding: 18px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.4s;
+      min-width: 220px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      background-color: #ff0000; /* Red warning color */
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      animation: flash 1s infinite; /* Flashing effect */
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+    }
+    @keyframes flash {
+      0% { background-color: #ff0000; }
+      50% { background-color: #ffcc00; } /* Yellow flash */
+      100% { background-color: #ff0000; }
+    }
+    .flash-btn:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-left">
+      <img src="jharkhand.png" alt="Jharkhand Logo" class="nav-logo">
+    </div>
+    <h1>Government of Jharkhand</h1>
+    <div>
+      <a href="home.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="mailto:support@samadhan.gov.in">Contact</a>
+    </div>
+  </div>
+  <header>
+    <h1><span class="text"></span></h1>
+    <p>आपकी आवाज़, हमारा समाधान</p>
+  </header>
+  <div class="container">
+    <h2>Welcome</h2>
+    <div class="objectives">
+      <a href="track.html" class="objective-btn">Track your Complain.<br> ट्रैक करें</a>
+      <a href="main.html" class="flash-btn">Register your Complain<br>शिकायत दर्ज करें</a>
+      <a href="adminlogin.html" class="objective-btn">Admin Login.<br>एडमिन लॉगिन</a>
+    </div>
+    <h3>How it Works / कैसे काम करता है</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle">1</div>
+        <p><strong>File Complaint</strong><br>शिकायत दर्ज करें</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <p><strong>Get ID</strong><br>आईडी प्राप्त करें</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <p><strong>Track</strong><br>ट्रैक करें</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">4</div>
+        <p><strong>Resolved</strong><br>समाधान</p>
+      </div>
+    </div>
+  </div>
+  <div class="stats-container">
+    <h2>📊 Complaint Statistics</h2>
+    <canvas id="complaintChart"></canvas>
+  </div>
+  <footer>
+    <div class="footer-sections">
+      <div>
+        <h4>FAQs</h4>
+        <details>
+          <summary>How can I file a complaint?</summary>
+          <p>You can file a complaint by clicking on the "Register Complain" button and following the instructions.</p>
+        </details>
+        <details>
+          <summary>How do I track my complaint?</summary>
+          <p>Click on "Track Complaint" and enter your complaint ID to check the status.</p>
+        </details>
+        <details>
+          <summary>Who can use this portal?</summary>
+          <p>Any resident of Jharkhand can use the Samadhan Portal to raise grievances.</p>
+        </details>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="home.html">🏠 Home</a></li>
+          <li><a href="main.html">👤 Register Complain</a></li>
+          <li><a href="adminlogin.html">🛠 Admin Login</a></li>
+          <li><a href="track.html">📌 Track Complaint</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Us</h4>
+        <p>📞 1800-XXXX-XXXX</p>
+        <p>✉ support@samadhan.gov.in</p>
+        <p>🏛 Municipal Corporation Office, Ranchi</p>
+      </div>
+    </div>
+    <p>© 2025 Samadhan Portal | Government of Jharkhand</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script>
+    var typed = new Typed(".text", {
+      strings: ["SAMADHAN PORTAL","समाधान पोर्टल"],
+      typeSpeed: 120,
+      backSpeed: 50,
+      backDelay: 1000,
+      loop: true
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('complaintChart').getContext('2d');
+    const complaintChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Resolved', 'Pending', 'In Progress', 'Rejected'],
+        datasets: [{
+          data: [45, 25, 20, 10],
+          backgroundColor: [
+            '#00ffcc',
+            '#ffcc00',
+            '#0099ff',
+            '#ff444'
+          ],
+          borderColor: '#111',
+          borderWidth: 2,
+          hoverOffset: 12
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: 'black',
+            font: { size: 14, weight: 'bold' }
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery & Slideshow</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #1e90ff;
+      color: white;
+      padding: 15px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    
+    .tabs {
+      margin: 20px;
+    }
+    .tabs button {
+      background: #ddd;
+      border: none;
+      padding: 12px 20px;
+      margin: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    .tabs button.active {
+      background: #1e90ff;
+      color: white;
+    }
+    .content {
+      display: none;
+      margin: 20px;
+      position: relative;
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .content.active {
+      display: block;
+    }
+    /* Cross button */
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      line-height: 28px;
+      transition: background 0.3s;
+    }
+    .close-btn:hover {
+      background: #e60000;
+    }
+    /* Gallery */
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 40px;
+    }
+    .gallery img {
+      width: 250px;
+      height: 160px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+    .gallery img:hover {
+      transform: scale(1.08);
+    }
+    /* Slideshow */
+    .slideshow {
+      max-width: 700px;
+      margin: 50px auto;
+      position: relative;
+    }
+    .slideshow img {
+      width: 100%;
+      border-radius: 12px;
+      display: none;
+    }
+    .slideshow img.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>📸 My Image Showcase</header>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('gallery')">Gallery</button>
+    <button class="tab-btn" onclick="showTab('slideshow')">Slideshow</button>
+  </div>
+
+  <!-- Gallery Section -->
+  <div id="gallery" class="content active">
+    <button class="close-btn" onclick="closeSection('gallery')">×</button>
+    <h2>Image Gallery</h2>
+    <div class="gallery">
+      <img src="https://via.placeholder.com/250x160/ff7f7f" alt="Image 1">
+      <img src="https://via.placeholder.com/250x160/87ceeb" alt="Image 2">
+      <img src="https://via.placeholder.com/250x160/90ee90" alt="Image 3">
+      <img src="https://via.placeholder.com/250x160/f0e68c" alt="Image 4">
+    </div>
+  </div>
+
+  <!-- Slideshow Section -->
+  <div id="slideshow" class="content">
+    <button class="close-btn" onclick="closeSection('slideshow')">×</button>
+    <h2>Automatic Slideshow</h2>
+    <div class="slideshow">
+      <img src="https://via.placeholder.com/700x400/ff7f7f" class="active">
+      <img src="https://via.placeholder.com/700x400/87ceeb">
+      <img src="https://via.placeholder.com/700x400/90ee90">
+      <img src="https://via.placeholder.com/700x400/f0e68c">
+    </div>
+  </div>
+
+  <script>
+    // Tab Switching
+    function showTab(tabId) {
+      document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // Close Section
+    function closeSection(sectionId) {
+      document.getElementById(sectionId).classList.remove('active');
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    }
+
+    // Slideshow
+    let slides = document.querySelectorAll(".slideshow img");
+    let index = 0;
+
+    function showNextSlide() {
+      slides[index].classList.remove("active");
+      index = (index + 1) % slides.length;
+      slides[index].classList.add("active");
+    }
+
+    setInterval(showNextSlide, 2500); // Change every 2.5 sec
+  </script>
+</body>
+</html>

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SAMADHAN — Report Portal</title>
+
+  <style>
+  :root{
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --text:#1f2937;
+    --muted:#6b7280;
+    --primary-600:#007bff;
+    --primary-500:#00c6ff;
+    --accent:#ff6b6b;
+    --glass: rgba(255,255,255,0.6);
+    --radius:14px;
+    --glass-border: rgba(255,255,255,0.55);
+  }
+
+  [data-theme="dark"]{
+    --bg: #0b1221;
+    --card: #071226;
+    --text: #e6eef8;
+    --muted: #9aa7bf;
+    --glass: rgba(12,18,30,0.35);
+    --glass-border: rgba(255,255,255,0.03);
+  }
+
+  *{box-sizing:border-box}
+  html,bodybody {
+  font-family: "Segoe UI", sans-serif;
+  color: #f8f9fa;
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(-45deg,rgb(163, 160, 160));
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  position: relative;
+  overflow-x: hidden;
+}
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+ @media (max-width: 768px) {
+      .navbar { flex-direction: column; text-align: center; }
+      .navbar h1 { font-size: 22px; }
+      header h1 { font-size: 28px; }
+      .container h2 { font-size: 22px; }
+      h3 { font-size: 20px; }
+    }
+
+    @media (max-width: 480px) {
+      .navbar { padding: 10px; }
+      .navbar h1 { font-size: 18px; }
+      header h1 { font-size: 22px; }
+      header p { font-size: 14px; }
+      .container h2 { font-size: 18px; }
+      .text { font-size: 28px; }
+    }
+body::before {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: 22%;
+  width: 60%;
+  height: 60%;
+  background: url("jharkhand.png") no-repeat center;
+  background-size: 500px;
+  opacity: 1; 
+  z-index: 0;
+  animation: floatLogo 20s linear infinite alternate;
+}
+
+
+/* Starfield effect */
+body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.7) 50%, transparent 50%),
+                    radial-gradient(1.5px 1.5px at 80% 60%, rgba(255,255,255,0.6) 50%, transparent 50%),
+                    radial-gradient(2px 2px at 40% 80%, rgba(255,255,255,0.5) 50%, transparent 50%);
+  background-repeat: repeat;
+  animation: twinkle 6s linear infinite;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+/* Animations */
+@keyframes moveGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+/* Make sure content floats above */
+header, main, footer {
+  position: relative;
+  z-index: 1;
+}
+
+
+  /* header */
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:14px 20px;
+    background: linear-gradient(90deg,var(--primary-600), var(--primary-500));
+    color:#fff;
+    box-shadow:0 6px 18px rgba(3,10,36,0.12);
+  }
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{width:48px;height:48px;border-radius:10px;object-fit:cover;border:2px solid rgba(255,255,255,0.18)}
+  .brand h1{font-size:18px;margin:0;letter-spacing:0.4px}
+  .header-actions{display:flex;gap:10px;align-items:center}
+  .clock{font-weight:700;font-size:13px;opacity:0.95}
+
+  .toggle {
+    --size:36px;
+    width:var(--size);height:var(--size);
+    display:inline-grid;place-items:center;
+    background:rgba(255,255,255,0.14);border-radius:10px;border:none;color:white;cursor:pointer;
+    transition:transform .18s ease, background .18s;
+  }
+  .toggle:active{transform:translateY(1px)}
+
+  /* container */
+  .wrap{
+    width:95%;
+    max-width:1150px;
+    margin:22px auto;
+    background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+    border-radius:var(--radius);
+    padding:22px;
+    box-shadow:0 10px 30px rgba(11,22,40,0.06);
+    backdrop-filter: blur(8px) saturate(1.05);
+    border: 1px solid var(--glass-border);
+  }
+
+  h2.section-title{margin:4px 0 18px;color:var(--primary-600);text-align:center;font-size:20px}
+
+  /* layout: form + reports side-by-side on wide screens */
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:20px;
+  }
+  @media(min-width:980px){
+    .grid{grid-template-columns: 460px 1fr; align-items:start}
+  }
+
+  /* form */
+  form{display:flex;flex-direction:column;gap:12px}
+  .form-grid{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:700px){ .form-grid{grid-template-columns:1fr 1fr} }
+  label.floating{
+    position:relative;display:block;
+  }
+  .field{
+    position:relative;background:var(--glass);
+    border-radius:10px;padding:10px;border:1px solid var(--glass-border);
+    transition:box-shadow .18s, transform .12s, border-color .12s;
+    display:flex;align-items:center;gap:8px;
+  }
+  .field:focus-within{box-shadow:0 6px 20px rgba(3,10,36,0.08);border-color:rgba(0,123,255,0.25);transform:translateY(-2px)}
+  .field input[type="text"], .field input[type="email"], .field input[type="tel"], .field textarea, .field select {
+    border:0;outline:0;background:transparent;padding:8px 6px;font-size:14px;color:var(--text);width:100%;
+  }
+  .field textarea{min-height:110px;resize:vertical}
+  .label-small{font-size:12px;color:var(--muted);margin-bottom:6px;display:block}
+
+  /* custom file */
+  .file-wrap{display:flex;gap:8px;align-items:center}
+  .file-btn{
+    padding:8px 12px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--primary-600),var(--primary-500));
+    color:#fff;font-weight:600;cursor:pointer;transition:transform .12s;
+  }
+  .file-btn:hover{transform:translateY(-3px)}
+  input[type="file"]{display:none}
+
+  /* audio controls */
+  .audio-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .audio-controls button{min-width:130px}
+
+  /* submit area */
+  .actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:8px}
+  .btn-primary{padding:10px 16px;border-radius:10px;background:linear-gradient(90deg,var(--primary-600),var(--primary-500));color:#fff;border:none;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(0,118,255,0.12);transition:transform .12s}
+  .btn-primary:hover{transform:translateY(-3px)}
+  .btn-ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);padding:8px 12px;border-radius:10px;cursor:pointer}
+
+  /* reports area */
+  .reports-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+  #clearReports{background:linear-gradient(90deg,var(--accent), #ff4b5c);border:none;color:#fff;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700}
+  .report-grid{
+    display:grid;gap:16px;
+    grid-template-columns: 1fr;
+  }
+  @media(min-width:860px){ .report-grid{grid-template-columns: repeat(2,1fr)} }
+  @media(min-width:1200px){ .report-grid{grid-template-columns: repeat(3,1fr)} }
+
+  .report-card{
+    background:var(--card);
+    border-radius:12px;padding:14px;position:relative;
+    box-shadow:0 10px 25px rgba(7,12,34,0.06);overflow:hidden;border:1px solid rgba(0,0,0,0.03);
+    transition:transform .18s, box-shadow .18s;
+  }
+  .report-card:hover{transform:translateY(-6px);box-shadow:0 16px 36px rgba(7,12,34,0.08)}
+  .report-top{display:flex;align-items:center;gap:12px}
+  .report-icon{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:linear-gradient(180deg,rgba(0,123,255,0.07), rgba(0,198,255,0.06));border:1px solid rgba(0,0,0,0.03)}
+  .report-meta{flex:1}
+  .report-meta h3{margin:0;color:var(--primary-600);font-size:16px}
+  .report-meta p{margin:6px 0 0;color:var(--muted);font-size:13px}
+  .report-body{margin-top:12px;color:var(--text);font-size:14px;line-height:1.4}
+  .report-media{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+  .report-card img{max-width:100%;border-radius:8px;display:block}
+  .report-actions{display:flex;gap:8px;align-items:center;margin-top:10px;justify-content:space-between}
+  .badge{background:linear-gradient(90deg,var(--primary-600),var(--primary-500));color:#fff;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700}
+  .ts{font-size:12px;color:var(--muted)}
+
+  .delete-btn{background:transparent;border:1px solid rgba(0,0,0,0.06);padding:6px 10px;border-radius:8px;cursor:pointer;color:var(--accent);font-weight:700}
+  .delete-btn:hover{transform:scale(1.03);border-color:rgba(0,0,0,0.12)}
+
+  /* small helpers */
+  .muted{color:var(--muted);font-size:13px}
+  a.phone-link{color:var(--primary-600);font-weight:700;text-decoration:none}
+
+  /* focus outlines for accessibility */
+  :focus{outline:3px solid rgba(0,123,255,0.12);outline-offset:3px;border-radius:8px}
+  </style>
+</head>
+
+
+<body>
+  <header>
+    <div class="brand">
+      <img src="screen.jpg" alt="Samadhan logo">
+      <div>
+        <h1>SAMADHAN PORTAL</h1>
+        <div class="muted" style="font-size:12px"></div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="clock" id="clock">—</div>
+      <button class="toggle" id="themeToggle" title="Toggle theme" aria-pressed="false">🌓</button>
+    </div>
+  </header>
+
+  
+
+  <main class="wrap" role="main">
+    <h2 class="section-title">Report an Issue</h2>
+
+    <div class="grid">
+      <!-- LEFT: Form -->
+      <section aria-labelledby="form-title">
+        <form id="issueForm" autocomplete="off" novalidate>
+          <div class="form-grid">
+            <label class="floating">
+              <div class="label-small">Full Name</div>
+              <div class="field"><input id="name" name="name" type="text" required placeholder="Your full name"></div>
+            </label>
+
+            <label class="floating">
+              <div class="label-small">Email</div>
+              <div class="field"><input id="email" name="email" type="email" required placeholder="you@example.com"></div>
+            </label>
+
+            <label class="floating">
+              <div class="label-small">Phone</div>
+              <div class="field"><input id="phone" name="phone" type="tel" pattern="[0-9]{10}" placeholder="10-digit mobile"></div>
+            </label>
+
+            <label class="floating">
+              <div class="label-small">Category</div>
+              <div class="field">
+                <select id="category" name="category" required>
+                  <option value="">-- Select --</option>
+                  <option>Pothole</option>
+                  <option>Streetlight Issue</option>
+                  <option>Garbage Collection</option>
+                  <option>Water Supply</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </label>
+          </div>
+
+          <label class="floating" style="margin-top:6px">
+            <div class="label-small">Location (auto)</div>
+            <div class="field"><input id="location" name="location" type="text" readonly placeholder="Fetching location..."></div>
+            <div class="label-small">Address</div>
+              <div class="field"><input id="address" name="address" type="text"></div>
+          </label>
+
+          <label class="floating">
+            <div class="label-small">Details</div>
+            <div class="field"><textarea id="details" name="details" required placeholder="Describe the issue in as much detail as possible"></textarea></div>
+          </label>
+
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="label-small">Images</div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <label class="file-btn" for="imageInput">📁 Upload</label>
+              <input id="imageInput" type="file" accept="image/*" style="display:none">
+              <label class="file-btn" for="cameraInput">📷 Camera</label>
+              <input id="cameraInput" type="file" accept="image/*" capture="environment" style="display:none">
+              <div class="muted" id="fileHint">No image selected</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="label-small">Audio report</div>
+            <div class="audio-controls">
+              <button type="button" id="startRec" class="btn-ghost">🎤 Start Recording</button>
+              <button type="button" id="stopRec" class="btn-ghost" disabled>⏹️ Stop</button>
+              <audio id="audioPlayback" controls style="display:none;width:100%"></audio>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="button" id="clearForm" class="btn-ghost">Reset</button>
+            <button type="submit" class="btn-primary">🚀 Submit Report</button>
+          </div>
+        </form>
+      </section>
+
+      
+ <!-- form data send to api -->
+       <script>
+    const thisform = document.getElementById("issueForm");
+
+    thisform.addEventListener("submit", async (e) => {
+      e.preventDefault(); // stop default form submission
+
+      // Collect form data
+      const formData = new FormData(thisform);
+      const data = Object.fromEntries(formData.entries()); // convert to JSON
+      console.log(data ,"befor submittion");
+      
+      try {
+        const response = await fetch(" http://localhost:8000/api/user/complaint", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        console.log("Success:", response);
+
+        alert("Form submitted successfully!");
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Something went wrong!");
+      }
+    });
+  </script>
+
+      <!-- RIGHT: Reports -->
+      <section aria-labelledby="reports-title">
+        <div class="reports-header">
+          <h2 class="section-title" id="reports-title" style="margin:0;text-align:left">Submitted Issues</h2>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button id="clearReports" title="Clear all saved reports">🗑️ Clear All</button>
+          </div>
+        </div>
+
+        <div class="report-grid" id="reports" aria-live="polite">
+          <!-- cards inserted here -->
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer style="text-align:center;padding:16px;background:transparent;color:var(--muted);font-size:13px">
+    📞 Helpline: <a href="tel:+911234567890" class="phone-link">1800-XXXX-XXXX</a> • ✉️ <a href="mailto:support@samadhanportal.com">support@samadhanportal.com</a>
+  </footer>
+
+  <script>
+  // ------ Clock + Theme -------
+  const clockEl = document.getElementById('clock');
+  function updateClock(){
+    const now = new Date();
+    clockEl.textContent = now.toLocaleDateString() + ' • ' + now.toLocaleTimeString();
+  }
+  setInterval(updateClock,1000); updateClock();
+
+  // theme toggle
+  const themeToggle = document.getElementById('themeToggle');
+  const savedTheme = localStorage.getItem('samadhan_theme') || 'light';
+  if(savedTheme === 'dark') document.documentElement.setAttribute('data-theme','dark');
+  themeToggle.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if(isDark){ document.documentElement.removeAttribute('data-theme'); themeToggle.setAttribute('aria-pressed','false'); localStorage.setItem('samadhan_theme','light'); }
+    else { document.documentElement.setAttribute('data-theme','dark'); themeToggle.setAttribute('aria-pressed','true'); localStorage.setItem('samadhan_theme','dark'); }
+  });
+
+  // ------ Elements -------
+  const form = document.getElementById('issueForm');
+  const reportsDiv = document.getElementById('reports');
+  const imageInput = document.getElementById('imageInput');
+  const cameraInput = document.getElementById('cameraInput');
+  const fileHint = document.getElementById('fileHint');
+  const startBtn = document.getElementById('startRec');
+  const stopBtn = document.getElementById('stopRec');
+  const audioPlayback = document.getElementById('audioPlayback');
+  const clearReportsBtn = document.getElementById('clearReports');
+  const clearFormBtn = document.getElementById('clearForm');
+
+  // icons
+  const icons = {
+    "Pothole":"🛣️",
+    "Streetlight Issue":"💡",
+    "Garbage Collection":"🗑️",
+    "Water Supply":"💧",
+    "Other":"⚡"
+  };
+
+  // ------ Geolocation -------
+  const locationEl = document.getElementById('location');
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(pos => {
+      locationEl.value = `Lat: ${pos.coords.latitude.toFixed(5)}, Lon: ${pos.coords.longitude.toFixed(5)}`;
+    }, err => {
+      locationEl.value = 'Location unavailable';
+    }, {timeout:8000});
+  } else {
+    locationEl.value = 'Geolocation not supported';
+  }
+
+  // ------ Audio recording -------
+  let mediaRecorder, audioChunks = [], audioBlob = null;
+  startBtn.addEventListener('click', async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+      mediaRecorder.onstop = () => {
+        audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        audioPlayback.src = URL.createObjectURL(audioBlob);
+        audioPlayback.style.display = 'block';
+      };
+      mediaRecorder.start();
+      startBtn.disabled = true; stopBtn.disabled = false;
+    } catch(e){
+      alert('Microphone access denied or not available.');
+    }
+  });
+  stopBtn.addEventListener('click', () => {
+    if(mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+    startBtn.disabled = false; stopBtn.disabled = true;
+  });
+
+  // ----- file selection UI -----
+  function updateFileHint(){
+    const f = imageInput.files[0] || cameraInput.files[0];
+    fileHint.textContent = f ? `${f.name} (${Math.round(f.size/1024)} KB)` : 'No image selected';
+  }
+  imageInput.addEventListener('change', updateFileHint);
+  cameraInput.addEventListener('change', updateFileHint);
+
+  // ------ persistence (array of objects) -------
+  function loadSavedReports(){
+    try {
+      const arr = JSON.parse(localStorage.getItem('samadhan_reports') || '[]');
+      return Array.isArray(arr) ? arr : [];
+    } catch(e) { return []; }
+  }
+
+  function saveAllReports(arr){
+    localStorage.setItem('samadhan_reports', JSON.stringify(arr));
+  }
+
+  function renderAll(){
+    reportsDiv.innerHTML = '';
+    const saved = loadSavedReports();
+    saved.forEach((r, idx) => renderReportCard(r, idx));
+  }
+
+  // ----- render one card -----
+  function renderReportCard(report, index){
+    const card = document.createElement('article');
+    card.className = 'report-card';
+    const ts = new Date(report.timestamp).toLocaleString();
+
+    card.innerHTML = `
+      <div class="report-top">
+        <div class="report-icon">${icons[report.category] || '📍'}</div>
+        <div class="report-meta">
+          <h3>${escapeHtml(report.category)}</h3>
+          <p class="muted">Reported by <strong>${escapeHtml(report.name||'Anonymous')}</strong> • <span class="ts">${ts}</span></p>
+        </div>
+      </div>
+
+      <div class="report-body">
+        <p><strong>Location:</strong> ${escapeHtml(report.location || '—')}</p>
+        <p><strong>Contact:</strong> ${report.phone ? `<a class="phone-link" href="tel:${escapeHtml(report.phone)}">${escapeHtml(report.phone)}</a>` : '—'} / ${escapeHtml(report.email||'—')}</p>
+        <p style="margin-top:8px">${escapeHtml(report.details)}</p>
+      </div>
+
+      <div class="report-media"></div>
+
+      <div class="report-actions">
+        <div class="badge">ID ${index+1}</div>
+        <div style="display:flex;gap:8px">
+          <button class="delete-btn" data-index="${index}" title="Delete this report">❌ Delete</button>
+        </div>
+      </div>
+    `;
+
+    // append media if any
+    const mediaBox = card.querySelector('.report-media');
+    if(report.image){
+      const img = document.createElement('img');
+      img.src = report.image;
+      mediaBox.appendChild(img);
+    }
+    if(report.audio){
+      const a = document.createElement('audio');
+      a.controls = true; a.src = report.audio;
+      mediaBox.appendChild(a);
+    }
+
+    // delete handler
+    card.querySelector('.delete-btn').addEventListener('click', () => {
+      if(!confirm('Delete this report?')) return;
+      const all = loadSavedReports();
+      all.splice(index,1);
+      saveAllReports(all);
+      renderAll();
+    });
+
+    reportsDiv.appendChild(card);
+  }
+
+  // ----- sanitize text for insertion (prevent XSS) -----
+  function escapeHtml(s){
+    if(!s) return '';
+    return s.replace(/[&<>"']/g, function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+    });
+  }
+
+  // ----- handle submit -----
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const category = document.getElementById('category').value || 'Other';
+    const location = document.getElementById('location').value;
+    const details = document.getElementById('details').value.trim();
+
+    if(!name || !email || !details) {
+      alert('Please fill in your name, email and details.');
+      return;
+    }
+
+    const report = {
+      name, email, phone, category, location, details,
+      image: null,
+      audio: null,
+      timestamp: new Date().toISOString()
+    };
+
+    // helper to convert file to base64
+    const fileToDataUrl = (file) => new Promise((res, rej) => {
+      if(!file) return res(null);
+      const reader = new FileReader();
+      reader.onload = () => res(reader.result);
+      reader.onerror = rej;
+      reader.readAsDataURL(file);
+    });
+
+    // if image file selected (preference: cameraInput over imageInput)
+    const cam = cameraInput.files[0];
+    const img = imageInput.files[0];
+    if(cam) report.image = await fileToDataUrl(cam);
+    else if(img) report.image = await fileToDataUrl(img);
+
+    if(audioBlob) {
+      // store audio as object URL for immediate playback
+      report.audio = URL.createObjectURL(audioBlob);
+      // Note: object URLs are not persisted across sessions — to fully persist audio you'd need to convert to base64 as well.
+      // For now, audio will persist only during the browser session. If you want persistent audio, convert Blob->DataURL here.
+    }
+
+    // save
+    const arr = loadSavedReports();
+    arr.push(report);
+    saveAllReports(arr);
+
+    // reset form state and re-render
+    form.reset();
+    audioPlayback.style.display = 'none';
+    audioBlob = null;
+    fileHint.textContent = 'No image selected';
+    renderAll();
+
+    // scroll to newly added card
+    setTimeout(()=> {
+      const last = reportsDiv.lastElementChild;
+      if(last) last.scrollIntoView({behavior:'smooth', block:'center'});
+    }, 120);
+  });
+
+  // ----- clear all -----
+  clearReportsBtn.addEventListener('click', () => {
+    if(!confirm('Clear all saved reports? This cannot be undone.')) return;
+    localStorage.removeItem('samadhan_reports');
+    renderAll();
+  });
+
+  // ----- clear form button -----
+  clearFormBtn.addEventListener('click', () => {
+    if(!confirm('Reset the form?')) return;
+    form.reset();
+    audioPlayback.style.display = 'none';
+    audioBlob = null;
+    fileHint.textContent = 'No image selected';
+  });
+
+  // reload images selected via hidden inputs into preview state
+  imageInput.addEventListener('change', updateFilePreview);
+  cameraInput.addEventListener('change', updateFilePreview);
+  function updateFilePreview(){
+    const f = cameraInput.files[0] || imageInput.files[0];
+    fileHint.textContent = f ? `${f.name} · ${Math.round(f.size/1024)} KB` : 'No image selected';
+  }
+
+  // Load saved on start
+  renderAll();
+
+  // ensure we attach "beforeunload" to revoke any created object URLs to avoid memory leaks
+  window.addEventListener('unload', () => {
+    const saved = loadSavedReports();
+    saved.forEach(r => {
+      // if audio was saved as object URL, revoke it (optional)
+      try { if(r.audio && r.audio.startsWith('blob:')) URL.revokeObjectURL(r.audio); } catch(e){}
+    });
+  });
+  </script>
+</body>
+</html>

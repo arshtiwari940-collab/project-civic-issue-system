@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAMADHAN PORTAL</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #f4f6f9;
+      color: #333;
+      background-image: url("v.jpg");
+      background-position: center;
+      background-size: cover;
+    }
+
+    header {
+      background: #09a4f2;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header img {
+      height: 50px;
+    }
+
+    header h1 {
+      font-size: 32px;
+      margin-left: 10px;
+    }
+
+    header .title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    header p {
+      font-size: 15px;
+      margin-top: -3px;
+      padding-left: 9px;
+    }
+
+    .container {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: #ffffff;
+      min-height: 100vh;
+      border-right: 1px solid #ddd;
+      padding-top: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      padding: 15px 20px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar ul li:hover {
+      background: #f0f0f0;
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 20px;
+      color: #1a1c1d;
+    }
+
+    .complaint-card {
+      background: white;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .complaint-card p {
+      margin: 8px 0;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 15px;
+      background: #0894e4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn:hover {
+      background: #00796b;
+    }
+
+    input, select {
+      margin-top: 10px;
+      padding: 8px;
+      width: 100%;
+      max-width: 300px;
+      display: block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title">
+      <img src="screen.jpg" alt="Logo" />
+      <div>
+        <h1>SAMADHAN PORTAL</h1>
+        <p>आपकी आवाज़, हमारा समाधान</p>
+      </div>
+    </div>
+    <div><i style="font-size: 24px;">👤</i></div>
+  </header>
+
+  <div class="container">
+    <nav class="sidebar">
+      <ul>
+        <li onclick="showSection('complaints')">📋 View Complaints</li>
+        <li onclick="showSection('assign')">📍 Assign to Depot</li>
+        <li onclick="showSection('update')">⚙️ Update Status</li>
+        <li onclick="showSection('report')">📊 Generate Report</li>
+        <li onclick="logout()">↩️ Logout</li>
+      </ul>
+    </nav>
+
+    <main class="content" id="mainContent">
+      <h2>Welcome to Samadhan Portal</h2>
+      <p>Select an option from the left menu.</p>
+    </main>
+  </div>
+
+  <script>
+    let complaints = [];
+
+    async function getcom() {
+      try {
+        const response = await fetch("http://localhost:8000/api/user/getcomplaints", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const result = await response.json();
+        complaints = result.complaints || [];
+        showSection("complaints");
+      } catch (error) {
+        console.error("Error fetching complaints:", error);
+        alert("Failed to load complaints from server.");
+      }
+    }
+
+    getcom();
+
+    function showSection(section) {
+      const content = document.getElementById("mainContent");
+      content.innerHTML = "";
+
+      if (section === "complaints") {
+        content.innerHTML = "<h2>List of Complaints</h2>";
+        if (complaints.length === 0) {
+          content.innerHTML += "<p>No complaints available.</p>";
+        } else {
+          complaints.forEach(c => {
+            content.innerHTML += `
+              <div class="complaint-card">
+                <p><b>Name:</b> ${c.name}</p>
+                <p><b>Complaint ID:</b> ${c.Complaints.complaint_id}</p>
+                <p><b>Title:</b> ${c.Complaints.description}</p>
+                <p><b>Location:</b> ${c.Complaints.location}</p>
+                <p><b>Status:</b> ${c.Complaints.status}</p>
+                <button class="btn" onclick="updateStatus('${c.Complaints.complaint_id}')">Update Status</button>
+              </div>
+            `;
+          });
+        }
+      } else if (section === "assign") {
+        content.innerHTML = `
+          <h2>Assign Complaint to Depot</h2>
+          <p>Select a complaint and assign to nearest depot.</p>
+          <button class="btn">Assign Now</button>
+        `;
+      } else if (section === "update") {
+        content.innerHTML = `
+          <h2>Update Complaint Status</h2>
+          <p>Enter Complaint ID and change its status.</p>
+          <input type="text" id="complaintId" placeholder="Complaint ID" />
+          <select id="newStatus">
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+          <button class="btn" onclick="applyUpdate()">Update</button>
+        `;
+      } else if (section === "report") {
+        content.innerHTML = `
+          <h2>Generate Report</h2>
+          <p>Complaint statistics will be shown here.</p>
+          <button class="btn" onclick="generateReport()">Generate</button>
+        `;
+      }
+    }
+
+    function updateStatus(complaintId) {
+      showSection("update");
+      setTimeout(() => {
+        document.getElementById("complaintId").value = complaintId;
+      }, 100);
+    }
+
+    async function applyUpdate() {
+      const complaintId = document.getElementById("complaintId").value;
+      const newStatus = document.getElementById("newStatus").value;
+
+      if (!complaintId || !newStatus) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:8000/api/user/updatestatus", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            complaint_id: complaintId,
+            status: newStatus,
+          }),
+        });
+
+        const result = await response.json();
+       console.log(result);
+       
+        if (response.ok) {
+          alert("Complaint status updated successfully.");
+          await getcom();
+        } else {
+          alert(result.message || "Failed to update complaint status.");
+        }
+      } catch (error) {
+        console.error("Error updating complaint:", error);
+        alert("Error updating complaint status.");
+      }
+    }
+
+    function generateReport() {
+      let pending = complaints.filter(c => c.Complaints.status === "Pending").length;
+      let progress = complaints.filter(c => c.Complaints.status === "In Progress").length;
+      let resolved = complaints.filter(c => c.Complaints.status === "Resolved").length;
+
+      document.getElementById("mainContent").innerHTML += `
+        <div class="complaint-card">
+          <p><b>Pending:</b> ${pending}</p>
+          <p><b>In Progress:</b> ${progress}</p>
+          <p><b>Resolved:</b> ${resolved}</p>
+        </div>
+      `;
+    }
+
+    function logout() {
+      alert("You have been logged out!");
+      window.location.href = "adminlogin.html";
+    }
+  </script>
+</body>
+</html>

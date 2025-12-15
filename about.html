@@ -1,0 +1,258 @@
+<!-- About Section -->
+<section id="about" class="about-section">
+  <h2>About – Civic Issues & Solutions</h2>
+  <div class="about-container">
+    <img src="about.jpg" alt="Social Issues" class="about-img">
+    <div class="about-text">
+      <h3>Addressing Social Issues</h3>
+      <p>
+        The <strong>Samadhan Portal</strong> is dedicated to resolving critical social issues faced by 
+        citizens of Jharkhand. From civic complaints like waste management, water supply, and 
+        road repairs to more sensitive issues such as corruption and public safety — the portal 
+        ensures a transparent and efficient grievance redressal system.
+      </p>
+      <div class="accordion">
+        <button class="accordion-btn">📌 Easy Online Complaint Registration</button>
+        <div class="accordion-content"><p>Citizens can file complaints anytime, anywhere using a secure online form.</p></div>
+
+        <button class="accordion-btn">📊 Real-Time Grievance Tracking</button>
+        <div class="accordion-content"><p>Each complaint gets a unique ID, enabling citizens to track live status.</p></div>
+
+        <button class="accordion-btn">✅ Quick Resolution by Officials</button>
+        <div class="accordion-content"><p>Complaints are directly routed to responsible government departments.</p></div>
+
+        <button class="accordion-btn">🤝 Community Participation</button>
+        <div class="accordion-content"><p>Civic bodies and citizens collaborate for accountability and trust.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="about-stats">
+    <div class="stat-box">
+      <h3>1,20,000+</h3>
+      <p>Complaints Resolved</p>
+    </div>
+    <div class="stat-box">
+      <h3>24x7</h3>
+      <p>Citizen Support</p>
+    </div>
+    <div class="stat-box">
+      <h3>98%</h3>
+      <p>Satisfaction Rate</p>
+    </div>
+  </div>
+  <div class="timeline">
+    <h3 class="timeline-title">🛠 Grievance Redressal Process</h3>
+    <div class="timeline-container">
+      <div class="timeline-step">
+        <div class="circle saffron"></div>
+        <p>Complaint<br>Registration</p>
+      </div>
+      <div class="timeline-step">
+        <div class="circle white"></div>
+        <p>Review &<br>Verification</p>
+      </div>
+      <div class="timeline-step">
+        <div class="circle green"></div>
+        <p>Forwarded<br>to Dept.</p>
+      </div>
+      <div class="timeline-step">
+        <div class="circle blue"></div>
+        <p>Action<br>Initiated</p>
+      </div>
+      <div class="timeline-step">
+        <div class="circle gold"></div>
+        <p>Issue<br>Resolved</p>
+      </div>
+    </div>
+  </div>
+  <div class="gov-quote">
+    <p>“Transparency, Accountability & Trust – Towards a Better Jharkhand”</p>
+  </div>
+</section>
+
+<style>
+body {
+  font-family: "Segoe UI", "Noto Sans", sans-serif;
+  background: #6caec4;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+.about-section {
+  margin: 60px auto;
+  padding: 40px 20px;
+  width: 95%;
+  max-width: 1250px;
+  background: #ffffff;
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+}
+.about-section h2 {
+  font-size: 28px;
+  color: #0b3d91;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+.about-section h2::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff9933, #ffffff, #138808);
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+.about-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 25px;
+  justify-content: center;
+}
+.about-img {
+  flex: 1 1 40%;
+  max-width: 420px;
+  border-radius: 10px;
+  border: 2px solid #0b3d91;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+.about-text {
+  flex: 1 1 55%;
+  color: #444;
+  font-size: 20px;
+}
+.accordion { margin-top: 15px; }
+.accordion-btn {
+  width: 100%;
+  background: #f0f4fa;
+  border: 1px solid #d6d6d6;
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.accordion-btn:hover { background: #e6eef8; }
+.accordion-content {
+  display: none;
+  padding: 12px;
+  background: #fff;
+  border-left: 3px solid #0b3d91;
+  font-size: 14px;
+  color: #555;
+}
+.accordion-btn.active + .accordion-content { display: block; }
+.about-stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+.stat-box {
+  flex: 1 1 30%;
+  min-width: 200px;
+  background: #f9fafc;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid #e2e2e2;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: transform 0.3s;
+}
+.stat-box:hover { transform: translateY(-5px); }
+.stat-box h3 { color: #0b3d91; font-size: 22px; margin-bottom: 6px; }
+.stat-box p { font-size: 14px; color: #666; }
+.timeline {
+  margin-top: 50px;
+  text-align: center;
+}
+.timeline-title {
+  font-size: 20px;
+  color: #0b3d91;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+.timeline-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  position: relative;
+  flex-wrap: wrap;
+}
+.timeline-step {
+  flex: 1;
+  min-width: 130px;
+  text-align: center;
+}
+.timeline-step p {
+  font-size: 14px;
+  margin-top: 10px;
+  color: #444;
+  font-weight: 500;
+}
+.circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  margin: 0 auto;
+  border: 3px solid #ccc;
+  box-shadow: 0 0 6px rgba(0,0,0,0.15);
+}
+.saffron { background: #ff9933; }
+.white   { background: #fff; border: 3px solid #bbb; }
+.green   { background: #138808; }
+.blue    { background: #0b3d91; }
+.gold    { background: #d4af37; }
+.timeline-container::before {
+  content: "";
+  position: absolute;
+  top: 13px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #dcdcdc;
+  z-index: -1;
+}
+.timeline-step:first-child .circle { box-shadow: 0 0 10px #ff9933; }
+.timeline-step:last-child .circle { box-shadow: 0 0 10px #d4af37; }
+.gov-quote {
+  margin-top: 45px;
+  padding: 18px;
+  text-align: center;
+  background: linear-gradient(90deg, #22a9de, #ffffff, #138808);
+  color: #181818;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+@media(max-width: 992px) {
+  .about-section { padding: 40px 25px; }
+  .about-text p { font-size: 15px; }
+  .timeline-container { flex-direction: column; align-items: center; }
+  .timeline-container::before {
+    width: 3px; height: 100%; left: 50%; top: 0;
+  }
+  .timeline-step { margin-bottom: 25px; }
+}
+@media(max-width: 600px) {
+  .about-section h2 { font-size: 24px; }
+  .about-img { max-width: 100%; }
+  .accordion-btn { font-size: 14px; padding: 10px; }
+  .stat-box h3 { font-size: 20px; }
+  .stat-box p { font-size: 13px; }
+  .timeline-title { font-size: 18px; }
+}
+</style>
+<script>
+document.querySelectorAll(".accordion-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    btn.classList.toggle("active");
+    let content = btn.nextElementSibling;
+    content.style.display = content.style.display === "block" ? "none" : "block";
+  });
+});
+</script>
